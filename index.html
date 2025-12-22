@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Gravity Guru - A serene, minimalist prompt library for Google Antigravity™ IDE.">
+    <title>Gravity Guru | Serene Prompt Library</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Tailwind Config for Custom Colors -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        background: 'var(--color-background)',
+                        surface: 'var(--color-surface)',
+                        border: 'var(--color-border)',
+                        primary: 'var(--color-text-primary)',
+                        secondary: 'var(--color-text-secondary)',
+                        accent: 'var(--color-accent)',
+                        success: 'var(--color-success)',
+                        warning: 'var(--color-warning)',
+                        error: 'var(--color-error)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        :root {
+            /* Light Theme (Default) */
+            --color-background: #FFFFFF;
+            --color-surface: #F8FAFC;
+            --color-border: #E2E8F0;
+            --color-text-primary: #1E293B;
+            --color-text-secondary: #64748B;
+            --color-accent: #3B82F6;
+            --color-success: #10B981;
+            --color-warning: #F59E0B;
+            --color-error: #EF4444;
+        }
+
+        .dark {
+            /* Dark Theme */
+            --color-background: #0F172A;
+            --color-surface: #1E293B;
+            --color-border: #334155;
+            --color-text-primary: #F1F5F9;
+            --color-text-secondary: #94A3B8;
+            --color-accent: #60A5FA;
+            --color-success: #34D399;
+            --color-warning: #FBBF24;
+            --color-error: #F87171;
+        }
+
+        body {
+            background-color: var(--color-background);
+            color: var(--color-text-primary);
+        }
+
+        /* Smooth Scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Hide scrollbar for clean look but keep functionality */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: var(--color-border);
+            border-radius: 4px;
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body class="transition-colors duration-300 antialiased min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header
+        class="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-[60px] flex items-center justify-between">
+            <!-- Logo -->
+            <div class="flex items-center gap-2">
+                <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
+                    </path>
+                </svg>
+                <span class="font-bold text-lg tracking-tight">Gravity Guru</span>
+            </div>
+
+            <!-- Desktop Nav -->
+            <nav class="hidden md:flex gap-8">
+                <button onclick="scrollToSection('mission')"
+                    class="text-sm font-medium hover:text-accent transition-colors nav-link active"
+                    data-target="mission">Mission</button>
+                <button onclick="scrollToSection('generators')"
+                    class="text-sm font-medium hover:text-accent transition-colors nav-link"
+                    data-target="generators">Generators</button>
+                <button onclick="scrollToSection('quizzes')"
+                    class="text-sm font-medium hover:text-accent transition-colors nav-link"
+                    data-target="quizzes">Quizzes</button>
+                <button onclick="scrollToSection('resources')"
+                    class="text-sm font-medium hover:text-accent transition-colors nav-link"
+                    data-target="resources">Resources</button>
+                <button onclick="scrollToSection('about')"
+                    class="text-sm font-medium hover:text-accent transition-colors nav-link"
+                    data-target="about">About</button>
+            </nav>
+
+            <!-- Theme Toggle & Mobile Menu -->
+            <div class="flex items-center gap-4">
+                <button id="theme-toggle" class="p-2 rounded-full hover:bg-surface transition-colors"
+                    aria-label="Toggle Theme">
+                    <!-- Sun Icon -->
+                    <svg id="sun-icon" class="w-5 h-5 text-warning hidden" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z">
+                        </path>
+                    </svg>
+                    <!-- Moon Icon -->
+                    <svg id="moon-icon" class="w-5 h-5 text-secondary" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z">
+                        </path>
+                    </svg>
+                </button>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="md:hidden p-2 rounded-md hover:bg-surface transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu (Hidden by default) -->
+        <div id="mobile-menu" class="hidden md:hidden border-t border-border bg-background">
+            <div class="px-4 pt-2 pb-4 space-y-1">
+                <button onclick="scrollToSection('mission')"
+                    class="block w-full text-left px-3 py-2 rounded-md text-base font-medium hover:bg-surface mobile-nav-link"
+                    data-target="mission">Mission</button>
+                <button onclick="scrollToSection('generators')"
+                    class="block w-full text-left px-3 py-2 rounded-md text-base font-medium hover:bg-surface mobile-nav-link"
+                    data-target="generators">Generators</button>
+                <button onclick="scrollToSection('quizzes')"
+                    class="block w-full text-left px-3 py-2 rounded-md text-base font-medium hover:bg-surface mobile-nav-link"
+                    data-target="quizzes">Quizzes</button>
+                <button onclick="scrollToSection('resources')"
+                    class="block w-full text-left px-3 py-2 rounded-md text-base font-medium hover:bg-surface mobile-nav-link"
+                    data-target="resources">Resources</button>
+                <button onclick="scrollToSection('about')"
+                    class="block w-full text-left px-3 py-2 rounded-md text-base font-medium hover:bg-surface mobile-nav-link"
+                    data-target="about">About</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-5xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 space-y-24">
+
+        <!-- Mission Section -->
+        <section id="mission"
+            class="min-h-[60vh] flex flex-col justify-center items-center text-center space-y-8 animate-fade-in">
+            <div
+                class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-surface border border-accent/20 text-accent text-sm font-medium mb-4">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                Unofficial Community Resource • Visit Official IDE →
+            </div>
+
+            <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-primary">
+                Master the Art of <br class="hidden sm:block">
+                <span class="text-accent">Antigravity Coding</span>
+            </h1>
+
+            <p class="text-xl text-secondary max-w-2xl mx-auto leading-relaxed">
+                A serene, minimalist prompt library designed to help you generate high-quality code prompts without
+                distractions.
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-4 mt-8">
+                <button onclick="scrollToSection('generators')"
+                    class="px-6 py-3 bg-accent hover:bg-blue-600 text-white font-medium rounded-lg transition-colors shadow-lg shadow-accent/20">
+                    Browse Generators
+                </button>
+                <button onclick="scrollToSection('about')"
+                    class="px-6 py-3 bg-surface hover:bg-border border border-border text-primary font-medium rounded-lg transition-colors">
+                    Learn Philosophy
+                </button>
+            </div>
+        </section>
+
+        <!-- Generators Section -->
+        <section id="generators" class="scroll-mt-24 space-y-8">
+            <div class="text-center space-y-2">
+                <h2 class="text-3xl font-bold text-primary">Prompt Generators</h2>
+                <p class="text-secondary">Craft the perfect prompt for your coding needs.</p>
+            </div>
+
+            <!-- Grid Container -->
+            <div id="generator-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Generator cards will be injected here by JS -->
+            </div>
+        </section>
+
+        <!-- Quizzes Section -->
+        <section id="quizzes" class="scroll-mt-24 space-y-8">
+            <div class="text-center space-y-2">
+                <h2 class="text-3xl font-bold text-primary">Knowledge Check</h2>
+                <p class="text-secondary">Test your understanding of Antigravity concepts.</p>
+            </div>
+
+            <div id="quiz-container" class="max-w-3xl mx-auto space-y-6">
+                <!-- Quizzes injected here -->
+            </div>
+        </section>
+
+        <!-- Resources Section -->
+        <section id="resources" class="scroll-mt-24 space-y-8">
+            <div class="text-center space-y-2">
+                <h2 class="text-3xl font-bold text-primary">Resources</h2>
+                <p class="text-secondary">Curated links to deepen your knowledge.</p>
+            </div>
+
+            <div id="resources-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Resources injected here -->
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="scroll-mt-24 space-y-8 mb-24">
+            <div class="max-w-3xl mx-auto bg-surface rounded-2xl p-8 border border-border">
+                <h2 class="text-2xl font-bold text-primary mb-4">About Gravity Guru</h2>
+                <p class="text-secondary leading-relaxed mb-4">
+                    Gravity Guru is a community-maintained project built to provide a clean, accessible interface for
+                    generating prompts specific to the Antigravity IDE.
+                </p>
+                <p class="text-secondary leading-relaxed">
+                    We believe in "Serene Learning"—removing distractions to focus on the code. This project is open
+                    source and we welcome contributions.
+                </p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-border bg-surface py-8">
+        <div class="max-w-7xl mx-auto px-4 text-center text-secondary text-sm">
+            <p>&copy; 2025 Gravity Guru. Unofficial Community Resource.</p>
+            <p class="mt-2">Built with <span class="text-error">♥</span> for the Antigravity community.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // --- Data: Generators ---
+        const generators = [
+            {
+                id: 'feature',
+                title: 'Feature Implementation',
+                description: 'Generate comprehensive prompts for building new features.',
+                icon: '✨',
+                inputs: [
+                    { id: 'name', label: 'Feature Name', placeholder: 'e.g. User Authentication', type: 'text', required: true },
+                    { id: 'desc', label: 'Description', placeholder: 'What does this feature do?', type: 'textarea', required: true },
+                    { id: 'stack', label: 'Tech Stack', placeholder: 'React, Node, etc.', type: 'text' },
+                    { id: 'reqs', label: 'Requirements', placeholder: 'One per line', type: 'textarea' }
+                ],
+                template: (data) => `I need to implement a new feature in my project using Google Antigravity IDE.
+
+## Feature: ${data.name || '[Feature Name]'}
+
+## Description
+${data.desc || '[Provide a detailed description of what this feature should do]'}
+
+## Tech Stack
+${data.stack || 'Not specified'}
+
+## Key Requirements
+${data.reqs || 'Not specified'}
+
+Please provide a detailed implementation guide, code examples, and architecture recommendations.`
+            },
+            {
+                id: 'bug',
+                title: 'Bug Fixer',
+                description: 'Generate prompts to help debug and fix code issues.',
+                icon: '🐛',
+                inputs: [
+                    { id: 'issue', label: 'Bug Description', placeholder: 'What is going wrong?', type: 'textarea', required: true },
+                    { id: 'error', label: 'Error Message', placeholder: 'Past the error log here...', type: 'textarea' },
+                    { id: 'context', label: 'Context', placeholder: 'When does this happen?', type: 'text' }
+                ],
+                template: (data) => `I need help debugging an issue in my project.
+
+## Bug Description
+${data.issue || '[Describe the bug]'}
+
+## Error Message
+${data.error || 'No specific error message'}
+
+## Context
+${data.context || 'No specific context'}
+
+Please analyze the potential causes and provide a step-by-step solution.`
+            },
+            {
+                id: 'test',
+                title: 'Testing Strategy',
+                description: 'Create test plans and unit test templates.',
+                icon: '🧪',
+                inputs: [
+                    { id: 'target', label: 'Component/Feature', placeholder: 'e.g. AuthController', type: 'text', required: true },
+                    { id: 'framework', label: 'Testing Framework', placeholder: 'Jest, Pytest, etc.', type: 'text' },
+                    { id: 'scenarios', label: 'Scenarios', placeholder: 'Happy path, edge cases...', type: 'textarea' }
+                ],
+                template: (data) => `I need a testing strategy for the following:
+
+## Target Component
+${data.target || '[Component Name]'}
+
+## Framework
+${data.framework || 'Not specified'}
+
+## Scenarios to Cover
+${data.scenarios || 'Standard happy paths and edge cases'}
+
+Please provide test code examples and a brief test plan.`
+            },
+            {
+                id: 'refactor',
+                title: 'Code Refactoring',
+                description: 'Clean up and optimize existing code.',
+                icon: '🛠️',
+                inputs: [
+                    { id: 'code', label: 'Code to Refactor', placeholder: 'Paste code here (or describe it)', type: 'textarea', required: true },
+                    { id: 'goal', label: 'Refactoring Goal', placeholder: 'Improve performance, readability, etc.', type: 'text' },
+                    { id: 'language', label: 'Language', placeholder: 'Python, JS, etc.', type: 'text' }
+                ],
+                template: (data) => `I need to refactor this code.
+
+## Code / Description
+${data.code || '[Insert Code]'}
+
+## Goal
+${data.goal || 'General improvement'}
+
+## Language
+${data.language || 'Not specified'}
+
+Please suggest a cleaner, more efficient implementation.`
+            },
+            {
+                id: 'docs',
+                title: 'Documentation',
+                description: 'Generate READMEs, API docs, and comments.',
+                icon: '📝',
+                inputs: [
+                    { id: 'subject', label: 'Subject', placeholder: 'Project Name or Function Name', type: 'text', required: true },
+                    { id: 'type', label: 'Doc Type', placeholder: 'README, API Reference, Docstring', type: 'text' },
+                    { id: 'audience', label: 'Target Audience', placeholder: 'Developers, Users, etc.', type: 'text' }
+                ],
+                template: (data) => `Please generate documentation for:
+
+## Subject
+${data.subject || '[Subject]'}
+
+## Type
+${data.type || 'General Documentation'}
+
+## Audience
+${data.audience || 'General'}
+
+Output should be in Markdown format.`
+            },
+            {
+                id: 'db',
+                title: 'Database Schema',
+                description: 'Design and optimize database structures.',
+                icon: '🗄️',
+                inputs: [
+                    { id: 'domain', label: 'Domain', placeholder: 'e.g. E-commerce', type: 'text', required: true },
+                    { id: 'entities', label: 'Entities', placeholder: 'Users, Products, Orders', type: 'textarea' },
+                    { id: 'dbtype', label: 'Database Type', placeholder: 'PostgreSQL, MongoDB', type: 'text' }
+                ],
+                template: (data) => `I need a database schema design.
+
+## Domain
+${data.domain || '[Domain]'}
+
+## Database Type
+${data.dbtype || 'Relational'}
+
+## Key Entities
+${data.entities || 'Standard entities for this domain'}
+
+Please provide the schema definition (SQL or NoSQL) and explain the relationships.`
+            },
+            {
+                id: 'api',
+                title: 'API Design',
+                description: 'Design RESTful or GraphQL endpoints.',
+                icon: '🔌',
+                inputs: [
+                    { id: 'resource', label: 'Resource', placeholder: 'e.g. Users', type: 'text', required: true },
+                    { id: 'style', label: 'Style', placeholder: 'REST, GraphQL', type: 'text' },
+                    { id: 'ops', label: 'Operations', placeholder: 'CRUD, Search, etc.', type: 'textarea' }
+                ],
+                template: (data) => `I need to design an API for:
+
+## Resource
+${data.resource || '[Resource]'}
+
+## Style
+${data.style || 'REST'}
+
+## Operations
+${data.ops || 'Standard CRUD'}
+
+Please define the endpoints, methods, and payload structures.`
+            },
+            {
+                id: 'security',
+                title: 'Security Audit',
+                description: 'Identify and fix security vulnerabilities.',
+                icon: '🔒',
+                inputs: [
+                    { id: 'component', label: 'Component', placeholder: 'Login Form, API Endpoint', type: 'text', required: true },
+                    { id: 'stack', label: 'Tech Stack', placeholder: 'Node, Express, etc.', type: 'text' },
+                    { id: 'concern', label: 'Specific Concerns', placeholder: 'XSS, SQL Injection', type: 'text' }
+                ],
+                template: (data) => `I need a security audit for:
+
+## Component
+${data.component || '[Component]'}
+
+## Stack
+${data.stack || 'Not specified'}
+
+## Key Concerns
+${data.concern || 'General security best practices'}
+
+Please identify potential vulnerabilities and suggest remediation steps.`
+            },
+            {
+                id: 'review',
+                title: 'Code Review',
+                description: 'Get constructive feedback on your code.',
+                icon: '👀',
+                inputs: [
+                    { id: 'changes', label: 'Code Changes', placeholder: 'Describe what changed or paste diff', type: 'textarea', required: true },
+                    { id: 'focus', label: 'Focus Areas', placeholder: 'Performance, Readability, Logic', type: 'text' }
+                ],
+                template: (data) => `Please perform a code review on these changes:
+
+## Changes
+${data.changes || '[Changes]'}
+
+## Focus Areas
+${data.focus || 'General best practices'}
+
+Provide constructive feedback and improvement suggestions.`
+            },
+            {
+                id: 'perf',
+                title: 'Performance',
+                description: 'Optimize application speed and efficiency.',
+                icon: '⚡',
+                inputs: [
+                    { id: 'problem', label: 'Problem', placeholder: 'Slow page load, high memory usage', type: 'text', required: true },
+                    { id: 'context', label: 'Context', placeholder: 'React App on Mobile', type: 'text' },
+                    { id: 'metrics', label: 'Current Metrics', placeholder: 'LCP 4s, TTI 5s', type: 'text' }
+                ],
+                template: (data) => `I am facing performance issues:
+
+## Problem
+${data.problem || '[Problem Description]'}
+
+## Context
+${data.context || 'Not specified'}
+
+## Metrics
+${data.metrics || 'Not provided'}
+
+Please analyze and suggest optimization strategies.`
+            }
+        ];
+
+        // --- Data: Quizzes ---
+        const quizzes = [
+            {
+                id: 'concepts',
+                question: 'Which architecture pattern does Antigravity favor?',
+                options: ['Microservices', 'Monolithic', 'Agentic Modular', 'Serverless only'],
+                correct: 2,
+                explanation: 'Antigravity emphasizes Agentic Modular design, where autonomous agents handle specific modules.'
+            },
+            {
+                id: 'safety',
+                question: 'What is the safe way to delete files?',
+                options: ['rm -rf', '.agent/scripts/safe-delete.sh', 'Delete key', 'Drag to trash'],
+                correct: 1,
+                explanation: 'Always use the provided safe-delete script to ensure deletions are logged and recoverable if needed.'
+            },
+            {
+                id: 'prompts',
+                question: 'What makes a prompt "Serene"?',
+                options: ['Lots of emojis', 'Clear, distraction-free structure', 'Complex language', 'Bright colors'],
+                correct: 1,
+                explanation: 'Serene prompts are clear, concise, and free of unnecessary fluff, focusing purely on utility.'
+            }
+        ];
+
+        // --- Data: Resources ---
+        const resources = [
+            { title: 'Official Documentation', url: 'https://antigravity.google/docs', icon: '📚', type: 'Official' },
+            { title: 'Community Issues', url: 'https://github.com/amalkp814/antigravity-portal/issues', icon: '💬', type: 'Community' },
+            { title: 'GitHub Repository', url: 'https://github.com/amalkp814/antigravity-portal', icon: '💻', type: 'Source' },
+            { title: 'Secure Coding Guide', url: 'https://owasp.org/www-project-secure-coding-practices-quick-reference-guide/', icon: '🛡️', type: 'Learning' },
+            { title: 'Project License', url: 'https://github.com/amalkp814/antigravity-portal/blob/main/LICENSE', icon: '⚖️', type: 'Reference' }
+        ];
+
+        // --- Initialization ---
+        document.addEventListener('DOMContentLoaded', () => {
+            renderGenerators();
+            renderQuizzes();
+            renderResources();
+        });
+
+        // --- Generator Rendering ---
+        function renderGenerators() {
+            const grid = document.getElementById('generator-grid');
+            grid.innerHTML = generators.map(gen => `
+                <div id="card-${gen.id}" class="rounded-xl border border-border bg-surface p-6 transition-all duration-300 hover:shadow-md cursor-pointer group" onclick="toggleGenerator('${gen.id}')">
+                    <div class="flex items-start justify-between">
+                        <div class="flex items-center gap-4">
+                            <span class="text-3xl filter grayscale group-hover:grayscale-0 transition-all">${gen.icon}</span>
+                            <div>
+                                <h3 class="text-lg font-bold text-primary group-hover:text-accent transition-colors">${gen.title}</h3>
+                                <p class="text-sm text-secondary mt-1">${gen.description}</p>
+                            </div>
+                        </div>
+                        <span class="text-secondary group-hover:text-accent transform transition-transform duration-300" id="icon-${gen.id}">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </span>
+                    </div>
+                    
+                    <div id="content-${gen.id}" class="hidden mt-6 pt-6 border-t border-border animate-fade-in" onclick="event.stopPropagation()">
+                        <div class="space-y-4">
+                            ${gen.inputs.map(input => `
+                                <div>
+                                    <label class="block text-sm font-medium text-primary mb-1">${input.label} ${input.required ? '<span class="text-error">*</span>' : ''}</label>
+                                    ${input.type === 'textarea'
+                    ? `<textarea id="input-${gen.id}-${input.id}" rows="3" class="w-full px-3 py-2 bg-background border border-border rounded-lg text-primary focus:outline-none focus:border-accent transition-colors placeholder-gray-400" placeholder="${input.placeholder}"></textarea>`
+                    : `<input type="${input.type}" id="input-${gen.id}-${input.id}" class="w-full px-3 py-2 bg-background border border-border rounded-lg text-primary focus:outline-none focus:border-accent transition-colors placeholder-gray-400" placeholder="${input.placeholder}">`
+                }
+                                </div>
+                            `).join('')}
+                            
+                            <button onclick="generate('${gen.id}')" class="w-full py-2 bg-accent hover:bg-blue-600 text-white rounded-lg font-medium transition-colors shadow-sm">
+                                Generate Prompt
+                            </button>
+                            
+                            <div id="output-container-${gen.id}" class="hidden space-y-2">
+                                <label class="block text-sm font-medium text-primary">Generated Prompt:</label>
+                                <div class="relative">
+                                    <textarea id="output-${gen.id}" readonly rows="6" class="w-full px-3 py-2 bg-background border border-border rounded-lg text-primary font-mono text-sm focus:outline-none"></textarea>
+                                    <button onclick="copyToClipboard('${gen.id}')" class="absolute top-2 right-2 p-2 bg-surface hover:bg-border border border-border rounded-md text-primary transition-colors text-xs font-medium">
+                                        Copy
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        let activeGeneratorId = null;
+
+        function toggleGenerator(id) {
+            const content = document.getElementById(`content-${id}`);
+            const icon = document.getElementById(`icon-${id}`);
+            const card = document.getElementById(`card-${id}`);
+
+            if (activeGeneratorId && activeGeneratorId !== id) {
+                // Close currently open generator
+                const prevContent = document.getElementById(`content-${activeGeneratorId}`);
+                const prevIcon = document.getElementById(`icon-${activeGeneratorId}`);
+                const prevCard = document.getElementById(`card-${activeGeneratorId}`);
+
+                prevContent.classList.add('hidden');
+                prevIcon.style.transform = 'rotate(0deg)';
+                prevCard.classList.remove('ring-1', 'ring-accent');
+            }
+
+            if (content.classList.contains('hidden')) {
+                // Open new
+                content.classList.remove('hidden');
+                icon.style.transform = 'rotate(180deg)';
+                card.classList.add('ring-1', 'ring-accent');
+                activeGeneratorId = id;
+            } else {
+                // Close current
+                content.classList.add('hidden');
+                icon.style.transform = 'rotate(0deg)';
+                card.classList.remove('ring-1', 'ring-accent');
+                activeGeneratorId = null;
+            }
+        }
+
+        function generate(id) {
+            const gen = generators.find(g => g.id === id);
+            if (!gen) return;
+
+            const data = {};
+            gen.inputs.forEach(input => {
+                data[input.id] = document.getElementById(`input-${id}-${input.id}`).value.trim();
+            });
+
+            const prompt = gen.template(data);
+
+            const outputContainer = document.getElementById(`output-container-${id}`);
+            const output = document.getElementById(`output-${id}`);
+
+            output.value = prompt;
+            outputContainer.classList.remove('hidden');
+
+            // Scroll to output
+            outputContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function copyToClipboard(id) {
+            const output = document.getElementById(`output-${id}`);
+            output.select();
+
+            navigator.clipboard.writeText(output.value).then(() => {
+                const btn = output.nextElementSibling; // The copy button
+                const originalText = btn.textContent;
+                btn.textContent = 'Copied!';
+                btn.classList.add('text-success');
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.classList.remove('text-success');
+                }, 2000);
+            });
+        }
+
+        // --- Quiz Rendering ---
+        function renderQuizzes() {
+            const container = document.getElementById('quiz-container');
+            container.innerHTML = quizzes.map((quiz, index) => `
+                <div class="rounded-xl border border-border bg-surface p-6">
+                    <h3 class="text-lg font-bold text-primary mb-4">${index + 1}. ${quiz.question}</h3>
+                    <div class="space-y-2">
+                        ${quiz.options.map((opt, optIndex) => `
+                            <label class="flex items-center p-3 rounded-lg border border-border cursor-pointer hover:bg-background transition-colors" id="q${index}-opt${optIndex}-label">
+                                <input type="radio" name="q${index}" value="${optIndex}" class="form-radio text-accent focus:ring-accent" onchange="checkAnswer(${index}, ${optIndex})">
+                                <span class="ml-3 text-secondary">${opt}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                    <div id="feedback-${index}" class="hidden mt-4 p-3 rounded-lg text-sm"></div>
+                </div>
+            `).join('');
+        }
+
+        function checkAnswer(quizIndex, selectedOption) {
+            const quiz = quizzes[quizIndex];
+            const feedbackEl = document.getElementById(`feedback-${quizIndex}`);
+            const isCorrect = selectedOption === quiz.correct;
+
+            // Reset styles
+            quiz.options.forEach((_, i) => {
+                const label = document.getElementById(`q${quizIndex}-opt${i}-label`);
+                label.classList.remove('bg-success/10', 'border-success', 'bg-error/10', 'border-error');
+            });
+
+            const selectedLabel = document.getElementById(`q${quizIndex}-opt${selectedOption}-label`);
+
+            if (isCorrect) {
+                selectedLabel.classList.add('bg-success/10', 'border-success');
+                feedbackEl.innerHTML = `<span class="font-bold text-success">Correct!</span> ${quiz.explanation}`;
+                feedbackEl.className = 'mt-4 p-3 rounded-lg text-sm bg-success/10 border border-success/20 text-text-primary';
+            } else {
+                selectedLabel.classList.add('bg-error/10', 'border-error');
+                feedbackEl.innerHTML = `<span class="font-bold text-error">Incorrect.</span> Try again!`;
+                feedbackEl.className = 'mt-4 p-3 rounded-lg text-sm bg-error/10 border border-error/20 text-text-primary';
+            }
+
+            feedbackEl.classList.remove('hidden');
+        }
+
+        // --- Resources Rendering ---
+        function renderResources() {
+            const grid = document.getElementById('resources-grid');
+            grid.innerHTML = resources.map(res => `
+                 <a href="${res.url}" class="block p-6 rounded-xl border border-border bg-surface hover:border-accent group transition-all duration-300">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-3xl">${res.icon}</span>
+                        <span class="text-xs font-semibold px-2 py-1 rounded-full bg-background text-secondary border border-border">${res.type}</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-primary group-hover:text-accent transition-colors">${res.title}</h3>
+                    <div class="mt-4 text-sm font-medium text-accent flex items-center gap-1">
+                        Open Resource <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                    </div>
+                </a>
+            `).join('');
+        }
+
+        // --- Theme Management ---
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const sunIcon = document.getElementById('sun-icon');
+        const moonIcon = document.getElementById('moon-icon');
+        const htmlElement = document.documentElement;
+
+        // Check local storage or system preference
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            htmlElement.classList.add('dark');
+            updateIcons(true);
+        } else {
+            htmlElement.classList.remove('dark');
+            updateIcons(false);
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            htmlElement.classList.toggle('dark');
+            const isDark = htmlElement.classList.contains('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            updateIcons(isDark);
+        });
+
+        function updateIcons(isDark) {
+            if (isDark) {
+                sunIcon.classList.remove('hidden');
+                moonIcon.classList.add('hidden');
+            } else {
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+            }
+        }
+
+        // --- Navigation Logic ---
+        function scrollToSection(id) {
+            const section = document.getElementById(id);
+            if (section) {
+                // Offset for sticky header
+                const headerOffset = 70;
+                const elementPosition = section.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: "smooth"
+                });
+
+                // Update Active Link
+                updateActiveLink(id);
+
+                // Close mobile menu if open
+                document.getElementById('mobile-menu').classList.add('hidden');
+            }
+        }
+
+        function updateActiveLink(id) {
+            // Update Desktop Nav
+            document.querySelectorAll('.nav-link').forEach(link => {
+                if (link.dataset.target === id) {
+                    link.classList.add('text-accent');
+                    link.classList.remove('text-primary'); // Assuming default is unset or primary color
+                } else {
+                    link.classList.remove('text-accent');
+                }
+            });
+
+            // Update Mobile Nav
+            document.querySelectorAll('.mobile-nav-link').forEach(link => {
+                if (link.dataset.target === id) {
+                    link.classList.add('text-accent', 'bg-surface');
+                } else {
+                    link.classList.remove('text-accent', 'bg-surface');
+                }
+            });
+        }
+
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Intersection Observer for Scroll Spy
+        const observerOptions = {
+            root: null,
+            rootMargin: '-30% 0px -70% 0px',
+            threshold: 0
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    updateActiveLink(entry.target.id);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section').forEach(section => {
+            observer.observe(section);
+        });
+
+    </script>
+</body>
+
+</html>

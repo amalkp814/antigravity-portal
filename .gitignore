@@ -1,0 +1,25 @@
+# Ironclad Policy - Protected Directories
+.agent/recycle_bin/
+
+# Environment Variables
+.env
+
+# Log Files
+*.log
+.agent/deletion.log
+
+# OS Generated
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Archive documentation (offline reference only)
+docs/archive/
+HONEST-ANALYSIS.md
+CHANGELOG.md
+CONTRIBUTING.md

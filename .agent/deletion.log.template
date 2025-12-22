@@ -1,0 +1,16 @@
+# Antigravity Safe Delete Audit Log
+# Version: 12.5.0 (Ironclad Edition)
+# ============================================
+# This file tracks all file deletion and restore operations
+# Format: [TIMESTAMP] OPERATION: source → destination
+# ============================================
+#
+# SETUP INSTRUCTIONS:
+# Copy this template to deletion.log:
+#   cp .agent/deletion.log.template .agent/deletion.log
+#
+# The deletion.log file will be created automatically by safe-delete.sh
+# and is excluded from version control (.gitignore)
+# ============================================
+
+# Log entries will appear below when safe-delete.sh is used
