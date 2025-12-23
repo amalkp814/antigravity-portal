@@ -1,0 +1,13 @@
+# Antigravity Browser Allowlist
+# Only these domains are accessible by the Agent.
+
+google.com
+github.com
+stackoverflow.com
+pypi.org
+npmjs.com
+readthedocs.io
+developer.mozilla.org
+w3schools.com
+localhost
+127.0.0.1

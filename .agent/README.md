@@ -11,10 +11,15 @@ This directory contains the operational infrastructure for the Antigravity agent
 ```plaintext
 .agent/
 ├── config/                    # Core configuration
-│   └── security-matrix.conf   # Security rules and permission definitions
+│   ├── security-matrix.conf   # Security rules and permission definitions
+│   └── browser_allowlist.txt  # Approved domains for browser agent
 │
-├── workflows/                 # Agent Workflows
-│   └── setup.md              # Project initialization and setup steps
+├── rules/                     # System Instructions (Always Active)
+│   ├── code-style.md          # Coding standards (PEP 8, etc.)
+│   └── code-generation.md     # Modular design constraints
+│
+├── workflows/                 # Agent Workflows (On-Demand)
+│   └── setup.md              # Project initialization steps
 │
 ├── scripts/                   # Utility Scripts
 │   └── safe-delete.sh        # Safety wrapper for file deletion

@@ -236,8 +236,8 @@
         <!-- Generators Section -->
         <section id="generators" class="scroll-mt-24 space-y-8">
             <div class="text-center space-y-2">
-                <h2 class="text-3xl font-bold text-primary">Prompt Generators</h2>
-                <p class="text-secondary">Craft the perfect prompt for your coding needs.</p>
+                <h2 class="text-3xl font-bold text-primary">Workflow Templates</h2>
+                <p class="text-secondary">Standardized blueprints for Antigravity artifacts and tasks.</p>
             </div>
 
             <!-- Grid Container -->
@@ -299,6 +299,77 @@
     <script>
         // --- Data: Generators ---
         const generators = [
+            {
+                id: 'imp-plan',
+                title: 'Implementation Plan',
+                description: 'Generate an official Antigravity Implementation Plan artifact.',
+                icon: '📋',
+                inputs: [
+                    { id: 'name', label: 'Feature Name', placeholder: 'e.g. User Auth', type: 'text', required: true },
+                    { id: 'files', label: 'Proposed Files', placeholder: 'auth.py, user.py', type: 'textarea' },
+                    { id: 'plan', label: 'Architecture Steps', placeholder: '1. Create DB schema\n2. Add routes', type: 'textarea' }
+                ],
+                template: (data) => `# Implementation Plan - ${data.name || 'Feature'}
+
+The following is a proposed architecture and implementation plan for legal review.
+
+## Proposed Changes
+
+### User Interface
+N/A or describe UI changes.
+
+### Site Architecture
+${data.plan || '- Step 1\n- Step 2'}
+
+### File Structure
+\`\`\`text
+${data.files || 'src/main.py'}
+\`\`\`
+
+## Verification Plan
+
+### Automated Tests
+- [ ] Unit tests for new modules
+- [ ] Integration test for API
+
+### Manual Verification
+- [ ] Launch server
+- [ ] Verify endpoint response`
+            },
+            {
+                id: 'task-list',
+                title: 'Task List',
+                description: 'Create a structured task list for the Agent.',
+                icon: '✅',
+                inputs: [
+                    { id: 'goal', label: 'Main Goal', placeholder: 'Refactor Database', type: 'text', required: true },
+                    { id: 'steps', label: 'Tasks', placeholder: 'One per line', type: 'textarea', required: true }
+                ],
+                template: (data) => `# Task List: ${data.goal}
+
+- [ ] ${data.steps ? data.steps.split('\n').join('\n- [ ] ') : 'Task 1'}`
+            },
+            {
+                id: 'walkthrough',
+                title: 'Walkthrough Template',
+                description: 'Standard format for post-implementation verification.',
+                icon: '🚶',
+                inputs: [
+                    { id: 'feature', label: 'Feature', placeholder: 'Login Flow', type: 'text', required: true },
+                    { id: 'verification', label: 'Verification Steps', placeholder: '1. Go to /login\n2. Enter creds', type: 'textarea' }
+                ],
+                template: (data) => `# Walkthrough - ${data.feature}
+
+I have completed the implementation. Here is how to verify the changes.
+
+## Verification Steps
+${data.verification || '1. Step 1\n2. Step 2'}
+
+## Automated Tests
+\`\`\`bash
+npm test
+\`\`\``
+            },
             {
                 id: 'feature',
                 title: 'Feature Implementation',
