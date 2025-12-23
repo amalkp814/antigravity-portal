@@ -17,9 +17,23 @@ It includes:
 - **Mobile First:** Fully responsive experience.
 - **Privacy:** Client-side only. No data is sent to any server.
 
-## Development
+## Quick Start: Agent Setup
 
-This project is a single-page application (`index.html`).
+Instantly configure any project with the v2.0 Antigravity architecture (Rules, Security Matrix, Workflows) using our one-click script.
+
+```bash
+# Run the scaffolding script in your project root
+./scaffold_agent.sh
+```
+
+This will create:
+
+- `.agent/config/` (Security Matrix & Browser Allowlist)
+- `.agent/rules/` (PEP 8, Modular Design)
+- `.agent/workflows/` (Setup templates)
+- `.agent/scripts/` (Safe-delete utility)
+
+## Development
 
 ### Running Locally
 
