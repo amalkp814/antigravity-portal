@@ -221,15 +221,48 @@
                 distractions.
             </p>
 
-            <div class="flex flex-col sm:flex-row gap-4 mt-8">
-                <button onclick="scrollToSection('generators')"
-                    class="px-6 py-3 bg-accent hover:bg-blue-600 text-white font-medium rounded-lg transition-colors shadow-lg shadow-accent/20">
-                    Explore Workflows
-                </button>
-                <button onclick="scrollToSection('about')"
-                    class="px-6 py-3 bg-surface hover:bg-border border border-border text-primary font-medium rounded-lg transition-colors">
-                    Learn Philosophy
-                </button>
+            <!-- Mission Control Dashboard -->
+            <div class="mt-12 max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
+                <!-- Card 1: Inbox -->
+                <div class="bg-surface p-6 rounded-xl border border-border shadow-sm hover:shadow-md transition-shadow">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg text-blue-600 dark:text-blue-400">
+                            📋
+                        </div>
+                        <h3 class="font-bold text-primary">Plan</h3>
+                    </div>
+                    <p class="text-secondary text-sm mb-4">Draft implementation plans and task lists for your agent.</p>
+                    <button onclick="scrollToSection('generators')"
+                        class="text-accent text-sm font-medium hover:underline">Open Workflows &rarr;</button>
+                </div>
+
+                <!-- Card 2: Rules -->
+                <div class="bg-surface p-6 rounded-xl border border-border shadow-sm hover:shadow-md transition-shadow">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div
+                            class="p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg text-purple-600 dark:text-purple-400">
+                            🛡️
+                        </div>
+                        <h3 class="font-bold text-primary">Govern</h3>
+                    </div>
+                    <p class="text-secondary text-sm mb-4">Configure agent behavior, security rules, and allowances.</p>
+                    <button onclick="scrollToSection('rules')"
+                        class="text-accent text-sm font-medium hover:underline">Manage Rules &rarr;</button>
+                </div>
+
+                <!-- Card 3: Artifacts -->
+                <div class="bg-surface p-6 rounded-xl border border-border shadow-sm hover:shadow-md transition-shadow">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div
+                            class="p-2 bg-green-100 dark:bg-green-900/30 rounded-lg text-green-600 dark:text-green-400">
+                            📦
+                        </div>
+                        <h3 class="font-bold text-primary">Verify</h3>
+                    </div>
+                    <p class="text-secondary text-sm mb-4">Generate walkthroughs and test plans for QA.</p>
+                    <button onclick="scrollToSection('quizzes')"
+                        class="text-accent text-sm font-medium hover:underline">Check Knowledge &rarr;</button>
+                </div>
             </div>
         </section>
 
@@ -243,6 +276,77 @@
             <!-- Grid Container -->
             <div id="generator-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Generator cards will be injected here by JS -->
+            </div>
+        </section>
+
+        <!-- Rule Generator Section -->
+        <section id="rules" class="scroll-mt-24 space-y-8">
+            <div class="text-center space-y-2">
+                <h2 class="text-3xl font-bold text-primary">Rule Generator</h2>
+                <p class="text-secondary">Create .agent/rules/ configurations visually.</p>
+            </div>
+
+            <div class="max-w-2xl mx-auto bg-surface rounded-xl border border-border p-6 space-y-6">
+                <!-- Toggle Options -->
+                <div class="space-y-4">
+                    <h3 class="text-lg font-bold text-primary">Select Active Rules</h3>
+
+                    <label
+                        class="flex items-center space-x-3 cursor-pointer p-3 rounded-lg hover:bg-background transition-colors border border-transparent hover:border-border">
+                        <input type="checkbox" id="rule-pep8"
+                            class="form-checkbox h-5 w-5 text-accent rounded focus:ring-accent" checked>
+                        <div>
+                            <span class="text-primary font-medium">Enforce PEP 8 (Python)</span>
+                            <p class="text-xs text-secondary">Strict adherence to Python style guide.</p>
+                        </div>
+                    </label>
+
+                    <label
+                        class="flex items-center space-x-3 cursor-pointer p-3 rounded-lg hover:bg-background transition-colors border border-transparent hover:border-border">
+                        <input type="checkbox" id="rule-docstrings"
+                            class="form-checkbox h-5 w-5 text-accent rounded focus:ring-accent" checked>
+                        <div>
+                            <span class="text-primary font-medium">Require Docstrings</span>
+                            <p class="text-xs text-secondary">Every function and class must have documentation.</p>
+                        </div>
+                    </label>
+
+                    <label
+                        class="flex items-center space-x-3 cursor-pointer p-3 rounded-lg hover:bg-background transition-colors border border-transparent hover:border-border">
+                        <input type="checkbox" id="rule-types"
+                            class="form-checkbox h-5 w-5 text-accent rounded focus:ring-accent">
+                        <div>
+                            <span class="text-primary font-medium">Strict Type Hinting</span>
+                            <p class="text-xs text-secondary">All signatures must have type annotations.</p>
+                        </div>
+                    </label>
+
+                    <label
+                        class="flex items-center space-x-3 cursor-pointer p-3 rounded-lg hover:bg-background transition-colors border border-transparent hover:border-border">
+                        <input type="checkbox" id="rule-tests"
+                            class="form-checkbox h-5 w-5 text-accent rounded focus:ring-accent" checked>
+                        <div>
+                            <span class="text-primary font-medium">Test-Driven Development</span>
+                            <p class="text-xs text-secondary">Tests must be written before implementation.</p>
+                        </div>
+                    </label>
+                </div>
+
+                <!-- Generated Output -->
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                        <label class="text-sm font-medium text-primary">Generated Rule File Content:</label>
+                        <span class="text-xs text-secondary font-mono">.agent/rules/params.md</span>
+                    </div>
+                    <div class="relative">
+                        <textarea id="rule-output" readonly rows="8"
+                            class="w-full px-4 py-3 bg-background border border-border rounded-lg text-primary font-mono text-sm focus:outline-none resize-none"></textarea>
+                        <button onclick="copyRule()"
+                            class="absolute top-2 right-2 p-2 bg-surface hover:bg-border border border-border rounded-md text-primary transition-colors text-xs font-medium">
+                            Copy
+                        </button>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -743,6 +847,48 @@ Please analyze and suggest optimization strategies.`
 
             // Scroll to output
             outputContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // --- Logic: Rule Generator ---
+        const ruleCheckboxes = document.querySelectorAll('input[type="checkbox"][id^="rule-"]');
+        const ruleOutput = document.getElementById('rule-output');
+
+        function updateRuleOutput() {
+            let content = '# Active Rules\n> Auto-generated by Gravity Guru\n\n';
+
+            if (document.getElementById('rule-pep8')?.checked) {
+                content += '## Python Style (PEP 8)\n* All code must follow PEP 8 standards.\n* Use 4 spaces for indentation.\n\n';
+            }
+            if (document.getElementById('rule-docstrings')?.checked) {
+                content += '## Documentation\n* All public classes and functions must have docstrings.\n\n';
+            }
+            if (document.getElementById('rule-types')?.checked) {
+                content += '## Type Safety\n* All function signatures must include type hints.\n* Avoid using `Any` where possible.\n\n';
+            }
+            if (document.getElementById('rule-tests')?.checked) {
+                content += '## Testing Policy\n* Write tests BEFORE implementation.\n* Ensure 100% pass rate before committing.\n\n';
+            }
+
+            if (ruleOutput) ruleOutput.value = content.trim();
+        }
+
+        if (ruleCheckboxes.length > 0) {
+            ruleCheckboxes.forEach(cb => cb.addEventListener('change', updateRuleOutput));
+            // Initial call
+            updateRuleOutput();
+        }
+
+        async function copyRule() {
+            const text = document.getElementById('rule-output').value;
+            try {
+                await navigator.clipboard.writeText(text);
+                const btn = document.querySelector('button[onclick="copyRule()"]');
+                const originalText = btn.innerText;
+                btn.innerText = 'Copied!';
+                setTimeout(() => btn.innerText = originalText, 2000);
+            } catch (err) {
+                console.error('Failed to copy:', err);
+            }
         }
 
         function copyToClipboard(id) {
