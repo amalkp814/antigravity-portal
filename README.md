@@ -7,7 +7,7 @@ A serene, minimalist prompt library for Google Antigravity™ IDE.
 Gravity Guru provides a clean, distraction-free interface to generate high-quality prompts for coding tasks.
 It includes:
 
-- **Prompt Generators:** Create detailed prompts for Features, Bugs, Tests, Refactoring, and more.
+- **Workflow Templates:** Create detailed prompts for Implementation Plans, Task Lists, Features, Bugs, Tests, and more.
 - **Knowledge Check:** Interactive quizzes to test your Antigravity knowledge.
 - **Resources:** Curated links to official and community resources.
 
