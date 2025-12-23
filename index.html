@@ -275,6 +275,27 @@
                     <button onclick="scrollToSection('quizzes')"
                         class="text-accent text-sm font-medium hover:underline">Check Knowledge &rarr;</button>
                 </div>
+
+                <!-- Card 4: History (New) -->
+                <div
+                    class="bg-surface p-6 rounded-xl border border-border shadow-sm hover:shadow-md transition-shadow md:col-span-3 lg:col-span-1">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div
+                            class="p-2 bg-yellow-100 dark:bg-yellow-900/30 rounded-lg text-yellow-600 dark:text-yellow-400">
+                            🕒
+                        </div>
+                        <h3 class="font-bold text-primary">Recent History</h3>
+                    </div>
+                    <div id="history-list" class="space-y-2 max-h-40 overflow-y-auto mb-2 custom-scrollbar">
+                        <!-- History injected here -->
+                        <div class="animate-pulse space-y-2">
+                            <div class="h-4 bg-border rounded w-3/4"></div>
+                            <div class="h-4 bg-border rounded w-1/2"></div>
+                        </div>
+                    </div>
+                    <button onclick="localStorage.removeItem('gravity-guru-history'); renderHistory()"
+                        class="text-xs text-error hover:underline mt-2">Clear History</button>
+                </div>
             </div>
         </section>
 
@@ -1084,7 +1105,114 @@ Please analyze and suggest optimization strategies.`
             observer.observe(section);
         });
 
-    </script>
-</body>
+        // --- Persistence Logic ---
+        function saveRuleState() {
+            const state = {};
+            ruleCheckboxes.forEach(cb => {
+                state[cb.id] = cb.checked;
+            });
+            localStorage.setItem('gravity-guru-rules', JSON.stringify(state));
+            updateRuleOutput();
+        }
 
-</html>
+        function loadRuleState() {
+            const saved = localStorage.getItem('gravity-guru-rules');
+            if (saved) {
+                const state = JSON.parse(saved);
+                ruleCheckboxes.forEach(cb => {
+                    if (state[cb.id] !== undefined) {
+                        cb.checked = state[cb.id];
+                    }
+                });
+                updateRuleOutput();
+            }
+        }
+
+        // Attach listeners to rules
+        ruleCheckboxes.forEach(cb => {
+            cb.addEventListener('change', saveRuleState);
+        });
+
+        // Initialize Rules
+        loadRuleState();
+
+        // --- Input Persistence ---
+        function saveInputState(genId, inputId, value) {
+            const key = `gravity-guru-input-${genId}-${inputId}`;
+            localStorage.setItem(key, value);
+        }
+
+        function loadInputState(genId, inputId) {
+            const key = `gravity-guru-input-${genId}-${inputId}`;
+            return localStorage.getItem(key) || '';
+        }
+
+        // Modify renderGenerators to attach listeners and load state - This requires editing renderGenerators function directly.
+        // Instead of rewriting the whole function, we can do a post-render attachment.
+        // However, since generators are rendered dynamically, we should do it after rendering.
+
+        // Re-run input attachment after render
+        setTimeout(() => {
+            generators.forEach(gen => {
+                gen.inputs.forEach(input => {
+                    const el = document.getElementById(`input-${gen.id}-${input.id}`);
+                    if (el) {
+                        // Load saved value
+                        el.value = loadInputState(gen.id, input.id);
+
+                        // Attach save listener
+                        el.addEventListener('input', (e) => {
+                            saveInputState(gen.id, input.id, e.target.value);
+                        });
+                    }
+                });
+            });
+        }, 100); // Small delay to ensure DOM is ready
+
+        // --- History / Recent Generations ---
+        function saveToHistory(type, promptFragment) {
+            const history = JSON.parse(localStorage.getItem('gravity-guru-history') || '[]');
+            const newItem = {
+                id: Date.now(),
+                type: type,
+                preview: promptFragment.substring(0, 60) + '...',
+                timestamp: new Date().toLocaleString()
+            };
+            history.unshift(newItem);
+            if (history.length > 10) history.pop(); // Keep last 10
+            localStorage.setItem('gravity-guru-history', JSON.stringify(history));
+            renderHistory();
+        }
+
+        function renderHistory() {
+            const container = document.getElementById('history-list');
+            if (!container) return;
+
+            const history = JSON.parse(localStorage.getItem('gravity-guru-history') || '[]');
+            if (history.length === 0) {
+                container.innerHTML = '<p class="text-secondary text-sm italic">No recent prompts generated.</p>';
+                return;
+            }
+
+            container.innerHTML = history.map(item => `
+                <div class="flex justify-between items-center p-2 border-b border-border last:border-0">
+                    <div>
+                        <span class="block text-xs font-bold text-primary">${item.type}</span>
+                        <span class="text-xs text-secondary truncate w-32 block">${item.preview}</span>
+                    </div>
+                    <span class="text-[10px] text-secondary">${item.timestamp.split(',')[0]}</span>
+                </div>
+            `).join('');
+        }
+
+        // Hook into generate function
+        const originalGenerate = generate;
+        generate = function (id) {
+            originalGenerate(id); // Call original
+            const gen = generators.find(g => g.id === id);
+            const output = document.getElementById(`output-${id}`).value;
+            saveToHistory(gen.title, output);
+        };
+
+
+</html >
