@@ -278,7 +278,7 @@
 
                 <!-- Card 4: History (New) -->
                 <div
-                    class="bg-surface p-6 rounded-xl border border-border shadow-sm hover:shadow-md transition-shadow md:col-span-3 lg:col-span-1">
+                    class="bg-surface p-6 rounded-xl border border-border shadow-sm hover:shadow-md transition-shadow md:col-span-3">
                     <div class="flex items-center space-x-3 mb-4">
                         <div
                             class="p-2 bg-yellow-100 dark:bg-yellow-900/30 rounded-lg text-yellow-600 dark:text-yellow-400">
@@ -736,6 +736,53 @@ ${data.metrics || 'Not provided'}
 
 Please analyze and suggest optimization strategies.`
             }
+            {
+                id: 'refactor-specialist',
+                title: 'Refactoring Specialist',
+                description: 'Expert agent to optimize code structure and performance.',
+                icon: '🛠️',
+                inputs: [
+                    { id: 'file_path', label: 'File Path', placeholder: 'src/utils/parser.py', type: 'text', required: true },
+                    { id: 'goal', label: 'Refactoring Goal', placeholder: 'Improve readability, Reduce complexity', type: 'text' }
+                ],
+                template: (data) => `# Workflow: Refactor ${data.file_path}
+
+I need you to refactor the code in \`${data.file_path}\`.
+
+## User Goal
+${data.goal || 'Optimize code structure and adhere to SOLID principles.'}
+
+## Instructions
+1. **Analyze**: Identify code smells, duplication, or complexity.
+2. **Plan**: Propose a refactoring strategy (e.g., Extract Method, Rename Variable).
+3. **Execute**: Apply changes safely.
+4. **Verify**: Ensure behavior remains unchanged (run tests).
+
+Please start by listing the issues you found.`
+            },
+            {
+                id: 'doc-arch',
+                title: 'Documentation Architect',
+                description: 'Generate comprehensive documentation for your codebase.',
+                icon: '📚',
+                inputs: [
+                    { id: 'scope', label: 'Scope', placeholder: 'Entire API, Specific Module', type: 'text', required: true },
+                    { id: 'style', label: 'Style', placeholder: 'Google Style Guide, JSDoc', type: 'text' }
+                ],
+                template: (data) => `# Workflow: Document ${data.scope}
+
+I need you to generate professional documentation for ${data.scope}.
+
+## Style Guide
+${data.style || 'Standard Project Documentation'}
+
+## Artifacts Required
+1. **README.md**: High-level overview.
+2. **API Reference**: Detailed function signatures.
+3. **Usage Examples**: Code snippets for common use cases.
+
+Please inspect the code and generate the documentation structure/content.`
+            }
         ];
 
         // --- Data: Quizzes ---
@@ -760,6 +807,20 @@ Please analyze and suggest optimization strategies.`
                 options: ['Lots of emojis', 'Clear, distraction-free structure', 'Complex language', 'Bright colors'],
                 correct: 1,
                 explanation: 'Serene prompts are clear, concise, and free of unnecessary fluff, focusing purely on utility.'
+            },
+            {
+                id: 'workflow-vs-rule',
+                question: 'What is the main difference between a Rule and a Workflow?',
+                options: ['No difference', 'Rules are always on; Workflows are on-demand', 'Workflows are safer', 'Rules are for beginners'],
+                correct: 1,
+                explanation: 'Rules (.agent/rules) are system instructions active for every chat. Workflows (.agent/workflows) are specific tasks triggered by you.'
+            },
+            {
+                id: 'trust-gap',
+                question: 'How does Antigravity solve the "Trust Gap"?',
+                options: ['By being famous', 'Through Artifacts (Plans, Proof)', 'It does not', 'By using blockchain'],
+                correct: 1,
+                explanation: 'Artifacts like Implementation Plans and Browser Recordings provide proof of work, bridging the trust gap.'
             }
         ];
 
@@ -769,7 +830,9 @@ Please analyze and suggest optimization strategies.`
             { title: 'Community Issues', url: 'https://github.com/amalkp814/antigravity-portal/issues', icon: '💬', type: 'Community' },
             { title: 'GitHub Repository', url: 'https://github.com/amalkp814/antigravity-portal', icon: '💻', type: 'Source' },
             { title: 'Secure Coding Guide', url: 'https://owasp.org/www-project-secure-coding-practices-quick-reference-guide/', icon: '🛡️', type: 'Learning' },
-            { title: 'Project License', url: 'https://github.com/amalkp814/antigravity-portal/blob/main/LICENSE', icon: '⚖️', type: 'Reference' }
+            { title: 'Project License', url: 'https://github.com/amalkp814/antigravity-portal/blob/main/LICENSE', icon: '⚖️', type: 'Reference' },
+            { title: 'Prompt Engineering Guide', url: 'https://www.promptingguide.ai/', icon: '🧠', type: 'External' },
+            { title: 'Google Codelabs', url: 'https://codelabs.developers.google.com/', icon: '🎓', type: 'Official' }
         ];
 
         // --- Initialization ---
